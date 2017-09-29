@@ -84,7 +84,7 @@ var app = {
         failure = function(){
             alert('failed writting');
         },
-        data = app.stringToBytes('0A');
+        data = app.stringToBytes($('#text').val());
 
         alert('writing to: '+id+' data: '+data);
 
