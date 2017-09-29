@@ -114,27 +114,28 @@ var app = {
     refreshDeviceList: function() {
         alert('refreshing list');
         // scan for all devices
-        //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
-        ble.scan([], 5, app.onDiscoverDevice, app.onError);
+        ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
+        //ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
 
         console.log(JSON.stringify(device));
-        var html = '<a href="#'+device.id+'" data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
+        var html = '<a href="#'+device.id+'" data-id="'+device.id+'" data-name="'+device.name+'"><b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 device.id + '</a><br>';
 
         $('#deviceList').append(html);
 
-        $('#deviceList a').on('touchstart',function(e){
+        $('#deviceList a').on('click',function(e){
             e.preventDefault();
             app.connect($(this));
         });
 
     },
     connect: function(tis) {
-        var deviceId = tis.data('id'),
-            onConnect = function() {
+        var id          = tis.data('id'),
+            name        = tis.data('name'),
+            onConnect   = function() {
 
                 // TODO check if we have the battery service
                 // TODO check if the battery service can notify us
@@ -142,12 +143,29 @@ var app = {
                 //batteryStateButton.dataset.deviceId = deviceId;
                 //disconnectButton.dataset.deviceId = deviceId;
                // app.showDetailPage();
-                alert('conected to '+deviceId);
+
+                $('#detailPage h1').text(name);
+                $('#batteryStateButton').data('id',id);
+                $('#batteryStateButton').on('click',function(e){
+                    e.preventDefault();
+                    app.writeData(id);
+                });
+
+                $('#detailPage, #mainPage').toggle();
             };
 
-            alert('conecting to ' + deviceId);
+        ble.connect(id, onConnect, app.onError);
+    },
+    writeData: function(id){
+        var success = function(){
+            alert('wrote');
+        },
+        failure = function(){
+            alert('failed writting');
+        },
+        data[] = '0x0A';
 
-        ble.connect(deviceId, onConnect, app.onError);
+        ble.write(id, "FF10", "FF11", data.buffer, success, failure);
     },
     onBatteryLevelChange: function(data) {
         console.log(data);
