@@ -128,7 +128,7 @@ var app = {
 
         $('#deviceList a').on('touchstart',function(e){
             e.preventDefault();
-            this.connect($(this));
+            app.connect($(this));
         });
 
     },
