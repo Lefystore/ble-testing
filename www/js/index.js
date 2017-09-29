@@ -35,14 +35,23 @@ var app = {
     onDeviceReady: function() {
         console.log('device ready');
         alert('device ready');
-        ble.scan([], 5, function(device) {
+        ble.startScan([], function(device) {
+            alert(device);
             var ul = '';
             $.each(device,function(k,v){
                 ul = '<li>'+v+'</li>';
             });
             $('#blelist').html(ul);
             console.log(JSON.stringify(device));
-        }, failure);
+        }, function(){
+            alert('scan fgailed');
+        });
+
+        setTimeout(ble.stopScan,
+            5000,
+            function() { alert("Scan complete"); },
+            function() { alert("stopScan failed"); }
+        );
     }
     
 };
