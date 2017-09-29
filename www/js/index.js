@@ -5,7 +5,6 @@ var battery = {
 
 var app = {
     initialize: function() {
-         alert('initialize');
         this.bindEvents();
     },
     bindEvents: function() {
@@ -35,18 +34,22 @@ var app = {
         //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
         ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
+    listedArray: [],
     onDiscoverDevice: function(device) {
-        var html = '<a href="#'+device.id+'" data-id="'+device.id+'" data-name="'+device.name+'"><b>' + device.name + '</b><br/>' +
-                'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
-                device.id + '</a><br>';
+        if(!app.listedArray[device.id]){
+            var html = '<a href="#'+device.id+'" data-id="'+device.id+'" data-name="'+device.name+'"><b>' + device.name + '</b><br/>' +
+                    'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
+                    device.id + '</a><br>';
 
-        $('#deviceList').append(html);
+            $('#deviceList').append(html);
 
-        $('#deviceList a').on('click',function(e){
-            e.preventDefault();
-            app.connect($(this));
-        });
+            $('#deviceList a').on('click',function(e){
+                e.preventDefault();
+                app.connect($(this));
+            });
 
+            app.listedArray[device.id] = true;
+        }
     },
     connect: function(tis) {
         var id          = tis.data('id'),
@@ -80,6 +83,8 @@ var app = {
             alert('failed writting');
         },
         data = stringToBytes('0x0A');
+
+        alert('writing to: '+id+' data: '+data);
 
         ble.writeWithoutResponse(id, "0002", "0003", data, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
