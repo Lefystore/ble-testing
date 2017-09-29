@@ -114,8 +114,8 @@ var app = {
     refreshDeviceList: function() {
         alert('refreshing list');
         // scan for all devices
-        ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
-        //ble.scan([], 5, app.onDiscoverDevice, app.onError);
+        //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
+        ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
 
