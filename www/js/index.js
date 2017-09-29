@@ -7,6 +7,7 @@ var battery = {
 
 var app = {
     initialize: function() {
+         alert('initialize');
         this.bindEvents();
     },
     bindEvents: function() {
