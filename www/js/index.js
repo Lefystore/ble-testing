@@ -64,13 +64,15 @@ var app = {
                // app.showDetailPage();
 
                 $('#detailPage h1').text(name);
-                $('#batteryStateButton').on('click',function(e){
-                    e.preventDefault();
-                    app.writeData(id);
-                });
 
                 $('#detailPage').show();
                 $('#mainPage').hide();
+
+                $('#batteryStateButton').on('click',function(e){
+                    e.preventDefault();
+                    alert('sending order to write data: '+id);
+                    app.writeData(id);
+                });
             };
 
         ble.connect(id, onConnect, app.onError);
