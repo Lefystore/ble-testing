@@ -145,13 +145,13 @@ var app = {
                // app.showDetailPage();
 
                 $('#detailPage h1').text(name);
-                $('#batteryStateButton').data('id',id);
                 $('#batteryStateButton').on('click',function(e){
                     e.preventDefault();
                     app.writeData(id);
                 });
 
-                $('#detailPage, #mainPage').toggle();
+                $('#detailPage').show();
+                $('#mainPage').hide();
             };
 
         ble.connect(id, onConnect, app.onError);
