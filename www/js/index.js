@@ -79,10 +79,9 @@ var app = {
         failure = function(){
             alert('failed writting');
         },
-        data = new Uint8Array(1);
-        data[0] = '0x0A';
+        data = stringToBytes('0x0A');
 
-        ble.write(id, "FF10", "FF11", data.buffer, success, failure);
+        ble.write(id, "FF10", "FF11", data, success, failure);
     },
     ascii_to_hexa: function(str){
         var arr1 = [];
@@ -91,6 +90,16 @@ var app = {
             arr1.push(hex);
          }
         return arr1.join('');
+    },
+    stringToBytes: function(string) {
+       var array = new Uint8Array(string.length);
+       for (var i = 0, l = string.length; i < l; i++) {
+           array[i] = string.charCodeAt(i);
+        }
+        return array.buffer;
+    },
+    bytesToString: function(buffer) {
+        return String.fromCharCode.apply(null, new Uint8Array(buffer));
     },
     onBatteryLevelChange: function(data) {
         console.log(data);
