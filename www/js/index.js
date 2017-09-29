@@ -3,6 +3,13 @@ var battery = {
     level: "2A19"
 };
 
+window.TextEncoder = window.TextDecoder = null;
+
+window.onerror = function(messageOrEvent, source, lineno, colno, error) {
+    var error = messageOrEvent+ ' | ' + source + ' | ' + lineno + ' | ' + colno + ' | ' + error;
+    $('#error').prepend(error);
+}
+
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -83,14 +90,14 @@ var app = {
         ble.connect(id, onConnect, app.onError);
     },
     writeData: function(id,text){
-        var success = function(){
+        var success     = function(){
             alert('wrote');
         },
-        failure = function(){
+        failure         = function(){
             alert('failed writting');
         },
-        text = $('#text').val(),
-        uint8array = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
+        text            = $('#text').val(),
+        uint8array      = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
         //data = app.stringToBytes(text);
 
         app.thalog('converting to byte: '+text);
