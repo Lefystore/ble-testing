@@ -33,6 +33,9 @@ var app = {
         // scan for all devices
         //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
         ble.scan([], 5, app.onDiscoverDevice, app.onError);
+        setTimeout(function(){
+            ble.stopScan(null, null);
+        },3000);
     },
     listedArray: [],
     onDiscoverDevice: function(device) {
@@ -63,6 +66,8 @@ var app = {
                 //disconnectButton.dataset.deviceId = deviceId;
                // app.showDetailPage();
 
+               ble.stopScan(null, null);
+
                 $('#detailPage h1').text(name);
 
                 $('#detailPage').show();
@@ -77,7 +82,7 @@ var app = {
 
         ble.connect(id, onConnect, app.onError);
     },
-    writeData: function(id){
+    writeData: function(id,text){
         var success = function(){
             alert('wrote');
         },
@@ -85,14 +90,31 @@ var app = {
             alert('failed writting');
         },
         text = $('#text').val(),
-        data = app.stringToBytes(text);
+        uint8array = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
+        //data = app.stringToBytes(text);
 
         app.thalog('converting to byte: '+text);
 
-        app.thalog('writing to: '+id+' data: '+data);
+        app.thalog('writing to: '+id+' data: '+uint8array.buffer);
 
-        ble.writeWithoutResponse(id, "0002", "0003", data, success, failure);
+        var serviceUUID         = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";// IOS ONLY
+        var writeCharacteristic = "49535343-8841-43F4-A8D4-ECBE34729BB3"; //IOS ONLY
+        var readCharacteristic  = "49535343-1E4D-4BD9-BA61-23C647249616"; //IOS ONLY
+
+        ble.write(id, serviceUUID, writeCharacteristic, uint8array.buffer, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
+    },
+    printEscCommand: function (id) {
+      var escCommand = Esc.InitializePrinter +
+        Esc.TextAlignRight + "HelloWorld!\n" +
+        Esc.TextAlignCenter + "HelloWorld!\n" +
+        Esc.TextAlignLeft + "HelloWorld!\n" +
+        Esc.BoldOn + "HelloWorld!\n" + Esc.BoldOff +
+        Esc.DoubleHeight + "HelloWorld!\n" + Esc.DoubleOff +
+        Esc.DoubleWidth + "HelloWorld!\n" + Esc.DoubleOff +
+        Esc.DoubleOn + "HelloWorld!\n" + Esc.DoubleOff +
+        Esc.PrintAndFeedMaxLine + Esc.CutAndFeedLine();
+      writeData(id,escCommand);
     },
     ascii_to_hexa: function(str){
         var arr1 = [];
@@ -145,6 +167,6 @@ var app = {
         alert("ERROR: " + reason); // real apps should use notification.alert
     },
     thalog: function(text){
-        $('#log').append(text+'<br>');
+        $('#log').prepend('- '+text+'<br>');
     }
 };
