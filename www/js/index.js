@@ -100,9 +100,9 @@ var app = {
     },
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
-        batteryStateButton.addEventListener('touchstart', this.readBatteryState, false);
-        disconnectButton.addEventListener('touchstart', this.disconnect, false);
+        //refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
+        //batteryStateButton.addEventListener('touchstart', this.readBatteryState, false);
+        //disconnectButton.addEventListener('touchstart', this.disconnect, false);
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
@@ -110,6 +110,10 @@ var app = {
         ble.isEnabled(function(){
             //bluetooth is on
             app.refreshDeviceList();
+            $('#refreshButton').on('click',function(e){
+                e.preventDefault();
+                app.refreshDeviceList();
+            });
         }, function(){
             //its oof
             alert('Debe activar el bluetooth de su dispositivo');
