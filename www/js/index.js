@@ -70,7 +70,7 @@ var app = {
 
                 $('#batteryStateButton').on('click',function(e){
                     e.preventDefault();
-                    thalog('sending order to write data: '+id);
+                    app.thalog('sending order to write data: '+id);
                     app.writeData(id);
                 });
             };
@@ -87,9 +87,9 @@ var app = {
         text = $('#text').val(),
         data = app.stringToBytes(text);
 
-        thalog('converting to byte: '+text);
+        app.thalog('converting to byte: '+text);
 
-        thalog('writing to: '+id+' data: '+data);
+        app.thalog('writing to: '+id+' data: '+data);
 
         ble.writeWithoutResponse(id, "0002", "0003", data, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
