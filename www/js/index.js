@@ -81,7 +81,8 @@ var app = {
         },
         data = stringToBytes('0x0A');
 
-        ble.write(id, "FF10", "FF11", data, success, failure);
+        ble.writeWithoutResponse(id, "0002", "0003", data, success, failure);
+        //ble.write(id, "FF10", "FF11", data, success, failure);
     },
     ascii_to_hexa: function(str){
         var arr1 = [];
