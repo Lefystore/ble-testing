@@ -97,14 +97,17 @@ var battery = {
 var app = {
     initialize: function() {
         this.bindEvents();
-        detailPage.hidden = true;
     },
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
         batteryStateButton.addEventListener('touchstart', this.readBatteryState, false);
         disconnectButton.addEventListener('touchstart', this.disconnect, false);
-        deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
+
+        $('li').on('click',function(){
+            this.connect($(this));
+        });
+        //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
         app.refreshDeviceList();
@@ -112,23 +115,21 @@ var app = {
     refreshDeviceList: function() {
         deviceList.innerHTML = ''; // empties the list
         // scan for all devices
-        ble.scan([], 5, app.onDiscoverDevice, app.onError);
+        ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
+        //ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
 
         console.log(JSON.stringify(device));
-        var listItem = document.createElement('li'),
-            html = '<b>' + device.name + '</b><br/>' +
+        var html = '<li data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
-                device.id;
+                device.id + '</li>';
 
-        listItem.dataset.deviceId = device.id;  // TODO
-        listItem.innerHTML = html;
-        deviceList.appendChild(listItem);
+        $('ul').append(html);
 
     },
-    connect: function(e) {
-        var deviceId = e.target.dataset.deviceId,
+    connect: function($this) {
+        var deviceId = $this.data('id'),
             onConnect = function() {
 
                 // TODO check if we have the battery service
@@ -137,6 +138,7 @@ var app = {
                 batteryStateButton.dataset.deviceId = deviceId;
                 disconnectButton.dataset.deviceId = deviceId;
                 app.showDetailPage();
+                alert('conected to '+deviceId);
             };
 
         ble.connect(deviceId, onConnect, app.onError);
