@@ -3,8 +3,6 @@ var battery = {
     level: "2A19"
 };
 
-window.TextEncoder = window.TextDecoder = null;
-
 window.onerror = function(messageOrEvent, source, lineno, colno, error) {
     var error = messageOrEvent+ ' | ' + source + ' | ' + lineno + ' | ' + colno + ' | ' + error;
     $('#error').prepend(error);
