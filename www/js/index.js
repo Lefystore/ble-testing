@@ -103,12 +103,10 @@ var app = {
         refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
         batteryStateButton.addEventListener('touchstart', this.readBatteryState, false);
         disconnectButton.addEventListener('touchstart', this.disconnect, false);
-
-        
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
-        FastClick.attach(document.body);
+        alert('device is ready');
         ble.isEnabled(function(){
             //bluetooth is on
             app.refreshDeviceList();
@@ -171,6 +169,15 @@ var app = {
         data[0] = '0x0A';
 
         ble.write(id, "FF10", "FF11", data.buffer, success, failure);
+    },
+    ascii_to_hexa: function(str){
+        var arr1 = [];
+        for (var n = 0, l = str.length; n < l; n ++) 
+         {
+            var hex = Number(str.charCodeAt(n)).toString(16);
+            arr1.push(hex);
+         }
+        return arr1.join('');
     },
     onBatteryLevelChange: function(data) {
         console.log(data);
