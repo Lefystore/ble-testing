@@ -104,9 +104,7 @@ var app = {
         batteryStateButton.addEventListener('touchstart', this.readBatteryState, false);
         disconnectButton.addEventListener('touchstart', this.disconnect, false);
 
-        $('li').on('click',function(){
-            this.connect($(this));
-        });
+        
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
@@ -121,11 +119,16 @@ var app = {
     onDiscoverDevice: function(device) {
 
         console.log(JSON.stringify(device));
-        var html = '<li data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
+        var html = '<a href="#" data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
-                device.id + '</li>';
+                device.id + '</a><br>';
 
         $('#deviceList').append(html);
+
+        $('li').on('click',function(e){
+            e.preventDefault();
+            this.connect($(this));
+        });
 
     },
     connect: function($this) {
@@ -135,9 +138,9 @@ var app = {
                 // TODO check if we have the battery service
                 // TODO check if the battery service can notify us
                 //ble.startNotification(deviceId, battery.service, battery.level, app.onBatteryLevelChange, app.onError);
-                batteryStateButton.dataset.deviceId = deviceId;
-                disconnectButton.dataset.deviceId = deviceId;
-                app.showDetailPage();
+                //batteryStateButton.dataset.deviceId = deviceId;
+                //disconnectButton.dataset.deviceId = deviceId;
+               // app.showDetailPage();
                 alert('conected to '+deviceId);
             };
 
