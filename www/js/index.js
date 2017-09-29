@@ -23,6 +23,9 @@ var app = {
     },
     onDeviceReady: function() {
 
+        var enc = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode('Probando encoding');
+        thalog('Probando encoding: '+enc);
+
         ble.isEnabled(function(){
             //bluetooth is on
             app.refreshDeviceList();
