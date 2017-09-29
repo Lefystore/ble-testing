@@ -113,10 +113,10 @@ var app = {
         app.refreshDeviceList();
     },
     refreshDeviceList: function() {
-        deviceList.innerHTML = ''; // empties the list
+        alert('refreshing list');
         // scan for all devices
-        ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
-        //ble.scan([], 5, app.onDiscoverDevice, app.onError);
+        //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
+        ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
 
@@ -125,7 +125,7 @@ var app = {
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 device.id + '</li>';
 
-        $('ul').append(html);
+        $('#deviceList').append(html);
 
     },
     connect: function($this) {
