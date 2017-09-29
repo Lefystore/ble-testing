@@ -70,7 +70,7 @@ var app = {
 
                 $('#batteryStateButton').on('click',function(e){
                     e.preventDefault();
-                    alert('sending order to write data: '+id);
+                    thalog('sending order to write data: '+id);
                     app.writeData(id);
                 });
             };
@@ -84,9 +84,12 @@ var app = {
         failure = function(){
             alert('failed writting');
         },
-        data = app.stringToBytes($('#text').val());
+        text = $('#text').val(),
+        data = app.stringToBytes(text);
 
-        alert('writing to: '+id+' data: '+data);
+        thalog('converting to byte: '+text);
+
+        thalog('writing to: '+id+' data: '+data);
 
         ble.writeWithoutResponse(id, "0002", "0003", data, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
@@ -142,6 +145,6 @@ var app = {
         alert("ERROR: " + reason); // real apps should use notification.alert
     },
     thalog: function(text){
-        $('#log').html(text);
+        $('#log').append(text+'<br>');
     }
 };
