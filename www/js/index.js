@@ -36,7 +36,11 @@ var app = {
         app.receivedEvent('deviceready');
 
         ble.scan([], 5, function(device) {
-            
+            var ul = '';
+            $.each(device,function(k,v){
+                ul = '<li>'+v+'</li>';
+            });
+            $('#blelist').html(ul);
             console.log(JSON.stringify(device));
         }, failure);
     },
