@@ -16,10 +16,7 @@ var app = {
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
-        alert('device is ready');
-        if(!ble){
-            alert('no plugin');
-        }
+
         ble.isEnabled(function(){
             //bluetooth is on
             app.refreshDeviceList();
@@ -33,7 +30,7 @@ var app = {
         });
     },
     refreshDeviceList: function() {
-        alert('refreshing list');
+        $('#deviceList').html('');
         // scan for all devices
         //ble.startScanWithOptions([],{ reportDuplicates: false }, app.onDiscoverDevice, app.onError);
         ble.scan([], 5, app.onDiscoverDevice, app.onError);
