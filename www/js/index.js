@@ -126,14 +126,14 @@ var app = {
 
         $('#deviceList').append(html);
 
-        $('#deviceList a').on('click',function(e){
+        $('#deviceList a').on('touchstart',function(e){
             e.preventDefault();
             this.connect($(this));
         });
 
     },
-    connect: function($this) {
-        var deviceId = $this.data('id'),
+    connect: function(tis) {
+        var deviceId = tis.data('id'),
             onConnect = function() {
 
                 // TODO check if we have the battery service
@@ -144,6 +144,8 @@ var app = {
                // app.showDetailPage();
                 alert('conected to '+deviceId);
             };
+
+            alert('conecting to ' + deviceId);
 
         ble.connect(deviceId, onConnect, app.onError);
     },
