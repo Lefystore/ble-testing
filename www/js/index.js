@@ -119,13 +119,13 @@ var app = {
     onDiscoverDevice: function(device) {
 
         console.log(JSON.stringify(device));
-        var html = '<a href="#" data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
+        var html = '<a href="#'+device.id+'" data-id="'+device.id+'"><b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 device.id + '</a><br>';
 
         $('#deviceList').append(html);
 
-        $('li').on('click',function(e){
+        $('#deviceList a').on('click',function(e){
             e.preventDefault();
             this.connect($(this));
         });
