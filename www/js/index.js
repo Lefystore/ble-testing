@@ -1,5 +1,3 @@
-'use strict';
-
 var battery = {
     service: "180F",
     level: "2A19"
@@ -19,6 +17,9 @@ var app = {
     },
     onDeviceReady: function() {
         alert('device is ready');
+        if(!ble){
+            alert('no plugin');
+        }
         ble.isEnabled(function(){
             //bluetooth is on
             app.refreshDeviceList();
@@ -55,8 +56,8 @@ var app = {
             name        = tis.data('name'),
             onConnect   = function() {
 
-                // TODO check if we have the battery service
-                // TODO check if the battery service can notify us
+                //  check if we have the battery service
+                //  check if the battery service can notify us
                 //ble.startNotification(deviceId, battery.service, battery.level, app.onBatteryLevelChange, app.onError);
                 //batteryStateButton.dataset.deviceId = deviceId;
                 //disconnectButton.dataset.deviceId = deviceId;
@@ -81,7 +82,7 @@ var app = {
         failure = function(){
             alert('failed writting');
         },
-        data = new Uint8Array(1),
+        data = new Uint8Array(1);
         data[0] = '0x0A';
 
         ble.write(id, "FF10", "FF11", data.buffer, success, failure);
