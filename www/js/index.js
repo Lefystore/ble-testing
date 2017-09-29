@@ -140,5 +140,8 @@ var app = {
     },
     onError: function(reason) {
         alert("ERROR: " + reason); // real apps should use notification.alert
+    },
+    thalog: function(text){
+        $('#log').html(text);
     }
 };
