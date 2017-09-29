@@ -109,7 +109,13 @@ var app = {
     },
     onDeviceReady: function() {
         FastClick.attach(document.body);
-        app.refreshDeviceList();
+        ble.isEnabled(function(){
+            //bluetooth is on
+            app.refreshDeviceList();
+        }, function(){
+            //its oof
+            alert('Debe activar el bluetooth de su dispositivo');
+        });
     },
     refreshDeviceList: function() {
         alert('refreshing list');
@@ -118,8 +124,6 @@ var app = {
         ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
-
-        console.log(JSON.stringify(device));
         var html = '<a href="#'+device.id+'" data-id="'+device.id+'" data-name="'+device.name+'"><b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 device.id + '</a><br>';
@@ -163,7 +167,8 @@ var app = {
         failure = function(){
             alert('failed writting');
         },
-        data[] = '0x0A';
+        data = new Uint8Array(1),
+        data[0] = '0x0A';
 
         ble.write(id, "FF10", "FF11", data.buffer, success, failure);
     },
