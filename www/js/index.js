@@ -33,8 +33,8 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-
+        console.log('device ready');
+        alert('device ready');
         ble.scan([], 5, function(device) {
             var ul = '';
             $.each(device,function(k,v){
@@ -43,16 +43,6 @@ var app = {
             $('#blelist').html(ul);
             console.log(JSON.stringify(device));
         }, failure);
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
     }
+    
 };
