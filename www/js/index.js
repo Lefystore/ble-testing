@@ -108,6 +108,7 @@ var app = {
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
+        FastClick.attach(document.body);
         app.refreshDeviceList();
     },
     refreshDeviceList: function() {
