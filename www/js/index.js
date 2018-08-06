@@ -78,6 +78,8 @@ var app = {
 
                 $('#detailPage h1').text(name);
 
+                app.thalog('conected: '+id);
+
                 $('#detailPage').show();
                 $('#mainPage').hide();
 
@@ -98,8 +100,14 @@ var app = {
             alert('failed writting');
         },
         text            = $('#text').val(),
-        uint8array      = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
+        //uint8array      = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
         //data = app.stringToBytes(text);
+        var uint8array = new Uint8Array(5);
+            uint8array[0] = 0x0A; // red
+            uint8array[1] = 0x1B; // green
+            uint8array[2] = 0x69; // blue
+            uint8array[3] = 0x0A; // red
+            uint8array[4] = 0x0A; // red
 
         app.thalog('converting to byte: '+text);
 
