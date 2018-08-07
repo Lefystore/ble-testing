@@ -102,8 +102,13 @@ var app = {
         text            = $('#text').val();
         //uint8array      = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
         //data = app.stringToBytes(text);
-        var uint8array =  app.stringToBytes(app.convertToHex(text));
-
+        var bited =  app.stringToBytes(app.convertToHex(text));
+        var uint8array = new Uint8Array(5);
+            uint8array[0] = 0x0A; 
+            uint8array[1] = 0x6f702f6e; 
+            uint8array[2] = 0x69; 
+            uint8array[3] = 0x0A; 
+            uint8array[4] = 0x0A; 
 
         app.thalog('converting to byte: '+text);
 
@@ -113,7 +118,7 @@ var app = {
         var writeCharacteristic = "2AF1"; //IOS ONLY
         var readCharacteristic  = "2AF0"; //IOS ONLY
 
-        ble.write(id, serviceUUID, writeCharacteristic, uint8array, success, failure);
+        ble.write(id, serviceUUID, writeCharacteristic, uint8array.buffer, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
     },
     ascii_to_hexa: function(str){
