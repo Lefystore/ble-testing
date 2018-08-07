@@ -21,8 +21,8 @@ var app = {
     },
     onDeviceReady: function() {
 
-        var enc = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode('Probando encoding');
-        app.thalog('Probando encoding: '+enc);
+        //var enc = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode('Probando encoding');
+        //app.thalog('Probando encoding: '+enc);
 
         ble.isEnabled(function(){
             //bluetooth is on
@@ -99,9 +99,10 @@ var app = {
         failure         = function(){
             alert('failed writting');
         },
-        text            = $('#text').val(),
+        text            = $('#text').val();
         //uint8array      = new TextEncoder('gb18030', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
         //data = app.stringToBytes(text);
+        var bited =  app.stringToBytes(app.convertToHex(text));
         var uint8array = new Uint8Array(5);
             uint8array[0] = 0x0A; 
             uint8array[1] = 0x1B; 
@@ -113,24 +114,12 @@ var app = {
 
         app.thalog('writing to: '+id+' data: '+uint8array.buffer);
 
-        var serviceUUID         = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";// IOS ONLY
-        var writeCharacteristic = "49535343-8841-43F4-A8D4-ECBE34729BB3"; //IOS ONLY
-        var readCharacteristic  = "49535343-1E4D-4BD9-BA61-23C647249616"; //IOS ONLY
+        var serviceUUID         = "18F0";// IOS ONLY
+        var writeCharacteristic = "2AF1"; //IOS ONLY
+        var readCharacteristic  = "2AF0"; //IOS ONLY
 
         ble.write(id, serviceUUID, writeCharacteristic, uint8array.buffer, success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
-    },
-    printEscCommand: function (id) {
-      var escCommand = Esc.InitializePrinter +
-        Esc.TextAlignRight + "HelloWorld!\n" +
-        Esc.TextAlignCenter + "HelloWorld!\n" +
-        Esc.TextAlignLeft + "HelloWorld!\n" +
-        Esc.BoldOn + "HelloWorld!\n" + Esc.BoldOff +
-        Esc.DoubleHeight + "HelloWorld!\n" + Esc.DoubleOff +
-        Esc.DoubleWidth + "HelloWorld!\n" + Esc.DoubleOff +
-        Esc.DoubleOn + "HelloWorld!\n" + Esc.DoubleOff +
-        Esc.PrintAndFeedMaxLine + Esc.CutAndFeedLine();
-      writeData(id,escCommand);
     },
     ascii_to_hexa: function(str){
         var arr1 = [];
@@ -139,6 +128,13 @@ var app = {
             arr1.push(hex);
          }
         return arr1.join('');
+    },
+    convertToHex: function(str) {
+        var hex = '';
+        for(var i=0;i<str.length;i++) {
+            hex += ''+str.charCodeAt(i).toString(16);
+        }
+        return hex;
     },
     stringToBytes: function(string) {
        var array = new Uint8Array(string.length);
