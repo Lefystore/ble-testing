@@ -118,7 +118,7 @@ var app = {
         var writeCharacteristic = "2AF1"; //IOS ONLY
         var readCharacteristic  = "2AF0"; //IOS ONLY
 
-        ble.write(id, serviceUUID, writeCharacteristic, uint8array.buffer, success, failure);
+        ble.write(id, serviceUUID, writeCharacteristic, app.stringToBytes(text), success, failure);
         //ble.write(id, "FF10", "FF11", data, success, failure);
     },
     ascii_to_hexa: function(str){
